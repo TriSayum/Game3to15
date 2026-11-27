@@ -13,9 +13,10 @@ button{font:inherit;touch-action:manipulation}
 button:focus-visible{outline:3px solid #759df2;outline-offset:4px}
 main{width:min(100%,880px)}
 .header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:24px}
-h1{font-size:clamp(38px,7vw,64px);font-weight:760;letter-spacing:-.065em;line-height:1;margin:0;display:table;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;cursor:default}
+h1{font-size:clamp(38px,7vw,64px);font-weight:760;letter-spacing:-.065em;line-height:1;margin:0;display:inline-grid;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;cursor:default}
+.title-label{grid-area:1/1;justify-self:start;white-space:nowrap;transition:opacity .34s var(--ease),transform .34s var(--ease)}
+.title-label[aria-hidden="true"]{opacity:0;transform:translateY(5px);pointer-events:none}
 .rules{margin:13px 0 0;color:var(--muted);font-size:14px;line-height:1.8;max-width:550px}
-.round{white-space:nowrap;color:var(--muted);font-size:13px;letter-spacing:.04em;padding-bottom:4px}
 .panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:clamp(16px,4vw,36px);box-shadow:0 12px 40px #263b5e09}
 .status{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;margin-bottom:22px}
 .status-main{display:flex;align-items:center;gap:12px;min-width:0}
@@ -29,7 +30,7 @@ h1{font-size:clamp(38px,7vw,64px);font-weight:760;letter-spacing:-.065em;line-he
 .progress{display:flex;gap:4px;flex:none}
 .progress i{width:7px;height:7px;border-radius:50%;background:#e6e9ee;transition:background .22s,transform .22s var(--ease)}
 .progress i.used{background:#8a96a7;transform:scale(1.08)}
-.board-stage{position:relative;min-width:0}
+.board-stage{position:relative;min-width:0;display:flow-root}
 .pool{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:clamp(4px,1.2vw,11px);margin:0 0 28px}
 .number-cell{min-width:0;aspect-ratio:1;display:grid;transform-origin:0 0}
 .number{position:relative;aspect-ratio:1;width:100%;height:100%;min-width:0;display:grid;place-items:center;background:#fafbfd;color:var(--ink);border:1px solid #dce2ea;border-radius:clamp(7px,1.5vw,13px);font-size:clamp(18px,4.3vw,36px);font-weight:650;cursor:pointer;transition:background .22s var(--ease),border-color .22s,color .22s,transform .18s var(--ease),box-shadow .18s;user-select:none}
@@ -71,7 +72,7 @@ h1{font-size:clamp(38px,7vw,64px);font-weight:760;letter-spacing:-.065em;line-he
 .restart:active{transform:scale(.96)}
 .restart.ready{background:var(--ink);color:white;border-color:var(--ink)}
 .restart.ready:hover{background:#3b4556}
-@media(max-width:550px){body{padding:24px 12px}.header{align-items:flex-start;margin-bottom:18px;gap:8px}.round{padding-top:8px;font-size:11px}.rules{font-size:12px}.panel{border-radius:16px}.status{margin-bottom:16px}.status-title{font-size:17px}.progress{gap:3px}.progress i{width:5px;height:5px}.pool{margin-bottom:20px}.owned{gap:8px}.hand{padding:12px 8px}.hand-header{margin-bottom:12px}.hand-name{font-size:12px}.hand-count{font-size:11px}.slots{gap:3px;min-height:24px}.slot{border-radius:5px}.bottom{margin-top:20px;padding-top:18px;gap:8px}.stats{gap:13px}.stats dt{font-size:10px}.stats dd{font-size:20px}.restart{font-size:12px;padding:10px 12px}}
+@media(max-width:550px){body{padding:24px 12px}.header{align-items:flex-start;margin-bottom:18px;gap:8px}.rules{font-size:12px}.panel{border-radius:16px}.status{margin-bottom:16px}.status-title{font-size:17px}.progress{gap:3px}.progress i{width:5px;height:5px}.pool{margin-bottom:20px}.owned{gap:8px}.hand{padding:12px 8px}.hand-header{margin-bottom:12px}.hand-name{font-size:12px}.hand-count{font-size:11px}.slots{gap:3px;min-height:24px}.slot{border-radius:5px}.bottom{margin-top:20px;padding-top:18px;gap:8px}.stats{gap:13px}.stats dt{font-size:10px}.stats dd{font-size:20px}.restart{font-size:12px;padding:10px 12px}}
 .board-stage.revealed .pool{grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,330px);margin:0 auto;gap:clamp(8px,1.2vw,11px)}
 .board-stage.revealed .number{font-size:clamp(28px,5vw,40px);border-radius:13px}
 .board-stage.revealed .owned{position:absolute;pointer-events:none;z-index:0}
@@ -83,8 +84,7 @@ h1{font-size:clamp(38px,7vw,64px);font-weight:760;letter-spacing:-.065em;line-he
 <body>
 <main>
 <header class="header">
-  <div><h1 id="gameTitle">3-to-15</h1><p class="rules">双方轮流从1～9中选择一个未被选过的数字，率先取得任意三个和为15的数字者获胜。</p></div>
-  <div class="round" id="round">第 01 局</div>
+  <div><h1 id="gameTitle" aria-label="3-to-15"><span class="title-label" id="numericTitle" aria-hidden="false">3-to-15</span><span class="title-label" id="magicTitle" aria-hidden="true">Tic-Tac-Toe</span></h1><p class="rules">双方轮流从1～9中选择一个未被选过的数字，率先取得任意三个和为15的数字者获胜。</p></div>
 </header>
 <section class="panel" id="panel" data-phase="player" aria-label="对弈区域">
   <div class="status">
@@ -157,7 +157,7 @@ const $=id=>document.getElementById(id);
 const pool=$("pool"), panel=$("panel"), restart=$("restart");
 const buttons=[], cells=[], progress=[], slots={player:[],computer:[]};
 const score={player:0,draw:0,computer:0};
-let p=0,c=0,order={player:[],computer:[]},phase="player",result=null,round=1,timer=null,generation=0;
+let p=0,c=0,order={player:[],computer:[]},phase="player",result=null,timer=null,generation=0;
 for(let n=1;n<=9;n++){
   const el=document.createElement("button");
   el.type="button";el.className="number";el.textContent=n;el.dataset.owner="none";el.setAttribute("aria-disabled","false");
@@ -209,7 +209,6 @@ function render(last=null){
   panel.dataset.phase=result&&result!=="draw"?result+"-win":result||phase;
   $("statusTitle").textContent=title;$("statusNote").textContent=note;
   restart.classList.toggle("ready",Boolean(result));restart.textContent=result?"再来一局":"重新开始";
-  $("round").textContent="第 "+String(round).padStart(2,"0")+" 局";
   for(const side of ["player","draw","computer"])$(side+"Score").textContent=score[side];
 }
 function choose(n,side){
@@ -233,60 +232,85 @@ function choose(n,side){
 }
 function newRound(){
   generation++;clearTimeout(timer);timer=null;
-  if(result||p||c)round++;
   p=0;c=0;order={player:[],computer:[]};phase="player";result=null;render();
 }
 // Reveal only changes presentation. The state and AI keep running normally.
 const magicOrder=[8,1,6,3,5,7,4,9,2];
 const boardStage=$("boardStage"), owned=$("owned"), gameTitle=$("gameTitle");
 const HOLD_MS=800, REVEAL_MS=850;
-let revealed=false, holdTimer=null, holdPointer=null, holdX=0, holdY=0;
+let revealed=false, switching=false, holdTimer=null, holdPointer=null, holdX=0, holdY=0;
 function cancelHold(){
   clearTimeout(holdTimer);holdTimer=null;holdPointer=null;
 }
-function reveal(){
-  if(revealed)return;
-  revealed=true;
+function toggleReveal(){
+  if(switching)return;
+  switching=true;
+  const toMagic=!revealed;
   const stageRect=boardStage.getBoundingClientRect();
-  const old= cells.map(cell=>cell.getBoundingClientRect());
-  const handRect=owned.getBoundingClientRect();
+  const relativeRect=el=>{
+    const a=el.getBoundingClientRect(), b=boardStage.getBoundingClientRect();
+    return {left:a.left-b.left,top:a.top-b.top,width:a.width,height:a.height};
+  };
+  const old=cells.map(relativeRect);
+  const handRect=toMagic?relativeRect(owned):null;
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // Pin the hand region so it can fade independently of the board reflow.
-  boardStage.style.height=stageRect.height+"px";
-  owned.style.top=(handRect.top-stageRect.top)+"px";
-  owned.style.left=(handRect.left-stageRect.left)+"px";
-  owned.style.width=handRect.width+"px";
-  owned.setAttribute("aria-hidden","true");
-  boardStage.classList.add("revealed");
-  for(const n of magicOrder)pool.append(cells[n-1]);
-  pool.setAttribute("aria-label","三阶幻方，可选数字");
-  const targetHeight=pool.getBoundingClientRect().height;
-  const end= cells.map(cell=>cell.getBoundingClientRect());
+  revealed=toMagic;
+  const title=toMagic?"Tic-Tac-Toe":"3-to-15";
+  gameTitle.setAttribute("aria-label",title);
+  $("numericTitle").setAttribute("aria-hidden",String(toMagic));
+  $("magicTitle").setAttribute("aria-hidden",String(!toMagic));
+  document.title=title;
+
+  // The same live cells and ownership state are retained in both layouts.
+  if(toMagic){
+    owned.style.top=handRect.top+"px";
+    owned.style.left=handRect.left+"px";
+    owned.style.width=handRect.width+"px";
+    owned.setAttribute("aria-hidden","true");
+  }else{
+    owned.hidden=false;
+    owned.style.top="";owned.style.left="";owned.style.width="";
+    owned.removeAttribute("aria-hidden");
+  }
+  boardStage.classList.toggle("revealed",toMagic);
+  for(const n of (toMagic?magicOrder:[1,2,3,4,5,6,7,8,9]))pool.append(cells[n-1]);
+  pool.setAttribute("aria-label",toMagic?"三阶幻方，可选数字":"可选数字");
+  const targetHeight=boardStage.getBoundingClientRect().height;
+  const next=cells.map(relativeRect);
   function finish(){
-    owned.hidden=true;
+    owned.hidden=toMagic;
     owned.style.top="";owned.style.left="";owned.style.width="";
     boardStage.style.height="";
+    switching=false;
   }
   if(reduce||typeof boardStage.animate!=="function"){finish();return;}
-  // FLIP: use transform-only tile movement; the stage height alone reflows.
+  // Coordinates are measured relative to the stage so vertical centering
+  // stays continuous while the stage itself changes height.
+  boardStage.style.height=targetHeight+"px";
   const timing={duration:REVEAL_MS,easing:"cubic-bezier(.25,.8,.25,1)"};
   cells.forEach((cell,i)=>{
-    const a=old[i],b=end[i];
+    const a=old[i],b=next[i];
     cell.animate([
-      {transform:"translate("+ (a.left-b.left)+"px,"+(a.top-b.top)+"px) scale("+(a.width/b.width)+","+(a.height/b.height)+")"},
+      {transform:"translate("+(a.left-b.left)+"px,"+(a.top-b.top)+"px) scale("+(a.width/b.width)+","+(a.height/b.height)+")"},
       {transform:"translate(0,0) scale(1,1)"}
     ],timing);
   });
-  owned.animate([{opacity:1,transform:"translateY(0)"},{opacity:0,transform:"translateY(8px)"}],
-    {duration:400,easing:"ease-out",fill:"forwards"}).onfinish=()=>{owned.hidden=true;};
+  if(toMagic){
+    const fade=owned.animate([{opacity:1,transform:"translateY(0)"},{opacity:0,transform:"translateY(8px)"}],
+      {duration:400,easing:"ease-out",fill:"forwards"});
+    fade.onfinish=()=>{owned.hidden=true;fade.cancel();};
+  }else{
+    owned.animate([{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"translateY(0)"}],
+      {duration:450,delay:200,easing:"ease-out",fill:"backwards"});
+  }
   const stageAnimation=boardStage.animate([{height:stageRect.height+"px"},{height:targetHeight+"px"}],timing);
   stageAnimation.onfinish=finish;
   stageAnimation.oncancel=finish;
 }
 gameTitle.addEventListener("pointerdown",e=>{
-  if(revealed||holdPointer!==null||!e.isPrimary||e.button!==0)return;
+  if(switching||holdPointer!==null||!e.isPrimary||e.button!==0||e.target===gameTitle)return;
   holdPointer=e.pointerId;holdX=e.clientX;holdY=e.clientY;
-  holdTimer=setTimeout(()=>{cancelHold();reveal();},HOLD_MS);
+  holdTimer=setTimeout(()=>{cancelHold();toggleReveal();},HOLD_MS);
 });
 window.addEventListener("pointermove",e=>{
   if(e.pointerId===holdPointer&&Math.hypot(e.clientX-holdX,e.clientY-holdY)>12)cancelHold();
